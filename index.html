@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#2f55d4">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
-<title>Parcours .NET 30 jours</title>
+<title>Parcours .NET 60 jours</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
 <style>
-/* Layout : sommaire fixe à gauche (semaine 0 + 30 jours), contenu du jour à droite ; sur mobile le sommaire devient un tiroir. */
+/* Layout : sommaire fixe à gauche (6 modules + bonus), contenu du jour à droite ; sur mobile le sommaire devient un tiroir. */
 :root {
   --bg: #f5f6f8; --panel: #ffffff; --fg: #171a21; --muted: #5d6474; --line: #dde1e8;
   --accent: #2f55d4; --accent-soft: #e6ecfd; --ok: #1d8a5b; --ok-soft: #e2f4ea;
@@ -43,7 +43,7 @@ h1, h2, h3 { font-family: var(--f-display); line-height: 1.2; text-wrap: balance
 button { font: inherit; cursor: pointer; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
-.app { display: grid; grid-template-columns: 290px minmax(0, 1fr); min-height: 100vh; }
+.app { display: grid; grid-template-columns: 300px minmax(0, 1fr); min-height: 100vh; }
 .side { position: sticky; top: 0; height: 100vh; overflow-y: auto; border-right: 1px solid var(--line); background: var(--panel); padding-block: 20px 32px; padding-inline: 18px; }
 .brand { font: 700 1.25rem var(--f-display); margin: 0 0 4px; }
 .brand a { color: var(--fg); text-decoration: none; }
@@ -133,13 +133,13 @@ section.block > h2 small { font: 500 .85rem var(--f-body); color: var(--muted); 
 .split div { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; }
 .split b { display: block; font: 700 1.5rem var(--f-display); }
 .split span { color: var(--muted); font-size: .92rem; }
-.weeks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.weeks { display: grid; gap: 14px; }
 .week-card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 18px; }
-.week-card.base { grid-column: 1 / -1; border-color: var(--accent); }
-.week-card h2 { font-size: 1.15rem; margin: 0 0 4px; }
-.week-card p { margin: 0 0 10px; color: var(--muted); font-size: .95rem; }
-.week-card ul { margin: 0; padding-left: 1.1em; font-size: .93rem; }
-.week-card.base ul { columns: 2; column-gap: 24px; }
+.week-card h2 { font-size: 1.15rem; margin: 0 0 4px; display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: baseline; }
+.week-card h2 small { font: 500 .85rem var(--f-mono); color: var(--muted); }
+.week-card p { margin: 0 0 10px; color: var(--muted); font-size: .95rem; max-width: 70ch; }
+.week-card ul { margin: 0; padding-left: 1.1em; font-size: .93rem; columns: 2; column-gap: 28px; }
+.week-card li { break-inside: avoid; }
 .week-card a { text-decoration: none; }
 .empty { color: var(--muted); font-style: italic; }
 
@@ -148,8 +148,8 @@ section.block > h2 small { font: 500 .85rem var(--f-body); color: var(--muted); 
   .side { position: fixed; inset: 0 auto 0 0; width: min(320px, 88vw); z-index: 20; transform: translateX(-100%); transition: transform .2s; padding-top: calc(20px + env(safe-area-inset-top, 0px)); padding-left: max(18px, env(safe-area-inset-left, 0px)); }
   .side.open { transform: none; box-shadow: 0 0 0 100vmax rgb(0 0 0 / .35); }
   .topbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 20px; }
-  .split, .weeks { grid-template-columns: minmax(0, 1fr); }
-  .week-card.base ul { columns: 1; }
+  .split { grid-template-columns: minmax(0, 1fr); }
+  .week-card ul { columns: 1; }
   .main { padding-top: 20px; }
 }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
@@ -160,7 +160,7 @@ section.block > h2 small { font: 500 .85rem var(--f-body); color: var(--muted); 
 <div class="app">
   <nav class="side" id="side" aria-label="Programme">
     <p class="brand"><a href="#accueil">Parcours .NET</a></p>
-    <p class="brand-sub">Bases + 35 jours · 3 h par jour · .NET 10</p>
+    <p class="brand-sub">60 jours + bonus · 3 h par jour · .NET 10</p>
     <div class="bar"><i id="bar"></i></div>
     <p class="bar-label" id="bar-label"></p>
     <div id="nav"></div>
@@ -184,6 +184,8 @@ section.block > h2 small { font: 500 .85rem var(--f-body); color: var(--muted); 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-docker.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-http.min.js"></script>
 <script src="week0a.js"></script>
 <script src="week0b.js"></script>
 <script src="week1.js"></script>
@@ -193,31 +195,42 @@ section.block > h2 small { font: 500 .85rem var(--f-body); color: var(--muted); 
 <script src="week4b.js"></script>
 <script src="week5a.js"></script>
 <script src="week5b.js"></script>
+<script src="n-fond-a.js"></script>
+<script src="n-fond-b.js"></script>
+<script src="n-ado-a.js"></script>
+<script src="n-ado-b.js"></script>
+<script src="n-ef-a.js"></script>
+<script src="n-ef-b.js"></script>
+<script src="n-api-a.js"></script>
+<script src="n-api-b.js"></script>
 <script>
-const WEEKS = [
-  { n: 0, title: "Bases de C#", text: "Pour démarrer de zéro : types, conditions, méthodes, classes, POO, class vs struct vs record, null et exceptions. Compare chaque notion avec TypeScript." },
-  { n: 1, title: "C# et le runtime", text: "Le langage en profondeur : types, LINQ, async, mémoire." },
-  { n: 2, title: "ASP.NET Core et les données", text: "API, injection de dépendances, EF Core, configuration, JWT." },
-  { n: 3, title: "Architecture et qualité", text: "Clean Architecture, CQRS, DDD, tests unitaires et d'intégration." },
-  { n: 4, title: "Production et performance", text: "Cache, jobs, perf, observabilité, Docker, CI/CD, entretien." },
-  { n: 5, title: "Compléments senior", text: "Concurrence et multithreading, puis les design patterns en C# moderne et les anti-patterns. La concurrence peut se faire après le jour 6, les patterns après le jour 15." },
+// Le parcours : chaque module liste les clés de contenu dans l'ordre (b1 = semaine 0 jour 1, j5 = ancien jour 5, sinon la clé du fichier)
+const MODULES = [
+  { n: 1, title: "Fondamentaux .NET et C#", text: "La plateforme, les projets, la syntaxe, la POO, class/struct/record, les collections, les génériques, LINQ, les fichiers et le JSON, l'asynchrone et la concurrence. Chaque notion est comparée à TypeScript.",
+    items: ["f-platform", "f-projects", "b1", "b2", "f-strings-dates", "b3", "b4", "b5", "b6", "b7", "f-collections", "f-generics", "j5", "j4", "f-linq-advanced", "f-files-json", "j6", "j7", "j31", "j32"] },
+  { n: 2, title: "SQL Server et ADO.NET", text: "Le SQL dont un développeur a besoin, puis ADO.NET de bout en bout : connexions, commandes, paramètres, transactions, procédures stockées, opérations en masse, et Dapper.",
+    items: ["a-sql", "a-connect", "a-params", "a-transactions", "a-disconnected", "a-repository-dapper"] },
+  { n: 3, title: "Maîtrise d'EF Core", text: "Modélisation, relations, migrations, requêtes, change tracker, concurrence, SQL brut, modélisation avancée, performance et tests.",
+    items: ["e-intro", "e-modeling", "e-relations", "e-migrations", "e-querying", "e-tracking", "e-concurrency-sql", "e-advanced-modeling", "e-performance", "e-testing-synthesis"] },
+  { n: 4, title: "Créer des APIs avec ASP.NET Core", text: "HTTP et REST, hébergement et middleware, injection de dépendances, controllers et Minimal APIs, DTOs et validation, erreurs et logging, CRUD complet, OpenAPI, authentification, sécurité et tests d'intégration.",
+    items: ["w-http-rest", "w-hosting", "j8", "w-controllers", "w-minimal-apis", "w-dtos-validation", "w-errors-logging", "j12", "w-crud-advanced", "w-openapi-versioning", "j13", "w-security-httpclient", "j18"] },
+  { n: 5, title: "Architecture, patterns et tests", text: "SOLID et Clean Architecture, design patterns, CQRS, tests unitaires, DDD et gestion des erreurs.",
+    items: ["j15", "j33", "j34", "j16", "j17", "j19", "j20"] },
+  { n: 6, title: "Mise en production", text: "Cache, tâches de fond et messaging, Docker et CI/CD, puis la préparation à l'entretien senior.",
+    items: ["j22", "j23", "j26", "j30"] },
+  { n: 7, bonus: true, title: "Bonus", text: "À faire quand tu veux, après le module concerné : performance, observabilité, temps réel, anti-patterns, durcissement, documentation et code review.",
+    items: ["j24", "j25", "j27", "j35", "j28", "j29", "j21"] },
 ];
-// Titres de repli si un fichier de contenu manque
-const BASE = ["Premier programme, variables et types","Conditions, boucles et méthodes","Classes et objets","POO : encapsulation et héritage","POO : polymorphisme et interfaces","Class, struct et record","Enums, null, exceptions et chaînes"];
-const PLAN = ["SDK, CLI et système de types","Classes, records, interfaces","Nullable, génériques, exceptions","Collections et LINQ","Delegates, lambdas, events","async/await et Task","Révision : GC et IDisposable",
-  "Pipeline et injection de dépendances","Routing, validation, OpenAPI","EF Core : bases","EF Core avancé","Configuration et logging","Authentification JWT et CORS","Révision : Dapper vs EF",
-  "SOLID et Clean Architecture","CQRS et handlers","Tests unitaires","Tests d'intégration","DDD tactique","Erreurs, Result pattern, résilience","Révision : code review",
-  "Caching","Background jobs et messaging","Performance et benchmarks","Observabilité et Aspire","Docker et CI/CD","SignalR et gRPC","Projet final : durcissement","Documentation et architecture","Préparation entretien senior",
-  "Concurrence et multithreading","Concurrence asynchrone et coordination","Patterns créationnels et structurels","Patterns comportementaux","Patterns en pratique et anti-patterns"];
+const LIBRARY = new Set(["f-platform", "f-projects", "f-strings-dates", "b1", "b2", "b3", "b4", "b5", "b6", "b7"]);
 
-const weekOf = n => n <= 7 ? 1 : n <= 14 ? 2 : n <= 21 ? 3 : n <= 30 ? 4 : 5;
-// Séquence complète : b1..b7 puis j1..j30 ; l'id sert d'ancre (#b3, #j12) et de clé de progression
-const SEQ = [
-  ...BASE.map((t, i) => ({ id: "b" + (i + 1), week: 0, label: "B" + (i + 1), title: t })),
-  ...PLAN.map((t, i) => ({ id: "j" + (i + 1), week: weekOf(i + 1), label: "J" + String(i + 1).padStart(2, "0"), title: t })),
-];
-const content = new Map((window.COURSE || []).map(d => [(d.week === 0 ? "b" : "j") + d.day, d]));
-for (const it of SEQ) { const d = content.get(it.id); if (d) { it.data = d; it.title = d.title; } }
+const keyOf = d => d.key || (d.week === 0 ? "b" : "j") + d.day;
+const content = new Map((window.COURSE || []).map(d => [keyOf(d), d]));
+const SEQ = [];
+let core = 0, bonus = 0;
+for (const m of MODULES) for (const key of m.items) {
+  const num = m.bonus ? ++bonus : ++core, d = content.get(key);
+  SEQ.push({ key, module: m, num, id: (m.bonus ? "x" : "d") + num, label: (m.bonus ? "+" : "J") + String(num).padStart(2, "0"), name: (m.bonus ? "Bonus " : "Jour ") + num, title: d ? d.title : "À venir", data: d });
+}
 const byId = new Map(SEQ.map(it => [it.id, it]));
 
 const KEY = "dotnet30-progress";
@@ -228,13 +241,14 @@ for (const k of Object.keys(state.days)) if (/^\d+$/.test(k)) { state.days["j" +
 for (const k of Object.keys(state.ex)) if (/^\d/.test(k)) { state.ex["j" + k] = state.ex[k]; delete state.ex[k]; }
 const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch {} };
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-const dayName = it => it.week === 0 ? `Bases ${it.id.slice(1)}` : `Jour ${it.id.slice(1)}`;
 
 // ponytail: détection du langage par heuristique, ajouter un champ "lang" aux exemples si elle se trompe
 function lang(code) {
   if (/^\s*FROM\s/m.test(code) && /^\s*(RUN|COPY|WORKDIR|ENTRYPOINT)\s/m.test(code)) return "docker";
   if (/^\s*(on|jobs|services):\s*$/m.test(code) || /^\s*- (uses|run|name):/m.test(code)) return "yaml";
-  if (/^\s*(dotnet|docker|npm|ng|git|curl) /m.test(code) && !/;\s*$/m.test(code)) return "bash";
+  if (/^(GET|POST|PUT|PATCH|DELETE|HEAD|OPTIONS) (https?:|\/|\{\{)/m.test(code) || /^HTTP\/[\d.]+ \d{3}/m.test(code)) return "http";
+  if (/^\s*(--[^\n]*\n\s*)*(SELECT|CREATE|INSERT|UPDATE|DELETE|ALTER|DECLARE|EXEC|USE|WITH|DROP|MERGE|BEGIN TRAN|SET )/.test(code) && !/\b(using|var|await|public|class)\s/.test(code)) return "sql";
+  if (/^\s*(dotnet|docker|npm|ng|git|curl|gh|sqlcmd) /m.test(code) && !/;\s*$/m.test(code)) return "bash";
   if (/^\s*[{[]/.test(code) && /"\s*:/.test(code) && !/;\s*$/m.test(code)) return "json";
   if (/\bimport\s+\{|\bexport\s+(class|const|function|interface)|@Injectable|@Component/.test(code)) return "typescript";
   return "csharp";
@@ -247,51 +261,53 @@ function codeBlock(code) {
 }
 
 function renderNav(currentId) {
-  const done = SEQ.filter(it => state.days[it.id]).length;
-  document.getElementById("bar").style.width = (done / SEQ.length * 100) + "%";
-  const label = `${done} / ${SEQ.length} journées terminées`;
+  const coreItems = SEQ.filter(it => !it.module.bonus), done = coreItems.filter(it => state.days[it.key]).length;
+  document.getElementById("bar").style.width = (done / coreItems.length * 100) + "%";
+  const label = `${done} / ${coreItems.length} jours terminés`;
   document.getElementById("bar-label").textContent = label;
   document.getElementById("bar-label-m").textContent = label;
-  document.getElementById("nav").innerHTML = WEEKS.map(w => {
-    const items = SEQ.filter(it => it.week === w.n).map(it => {
-      const cls = [state.days[it.id] ? "done" : "", it.data ? "" : "pending"].join(" ");
-      return `<li><a href="#${it.id}" class="${cls}" ${it.id === currentId ? 'aria-current="page"' : ""}><span class="n">${it.label}</span><span>${esc(it.title)}</span><span class="chk" aria-label="${state.days[it.id] ? "terminé" : "à faire"}"></span></a></li>`;
+  document.getElementById("nav").innerHTML = MODULES.map(m => {
+    const items = SEQ.filter(it => it.module === m).map(it => {
+      const cls = [state.days[it.key] ? "done" : "", it.data ? "" : "pending"].join(" ");
+      return `<li><a href="#${it.id}" class="${cls}" ${it.id === currentId ? 'aria-current="page"' : ""}><span class="n">${it.label}</span><span>${esc(it.title)}</span><span class="chk" aria-label="${state.days[it.key] ? "terminé" : "à faire"}"></span></a></li>`;
     });
-    return `<div class="wk"><h2>Semaine ${w.n} · ${esc(w.title)}</h2><ol>${items.join("")}</ol></div>`;
+    return `<div class="wk"><h2>${m.bonus ? "" : "Module " + m.n + " · "}${esc(m.title)}</h2><ol>${items.join("")}</ol></div>`;
   }).join("");
 }
 
 function renderHome() {
-  const next = SEQ.find(it => !state.days[it.id]) || SEQ[SEQ.length - 1];
-  const started = SEQ.some(it => state.days[it.id]);
+  const next = SEQ.find(it => !it.module.bonus && !state.days[it.key]) || SEQ[0];
+  const started = SEQ.some(it => state.days[it.key]);
   return `<div class="hero">
-    <p class="eyebrow">Programme intensif · .NET 10 / C# 14</p>
-    <h1>De développeur fullstack à .NET confirmé</h1>
-    <p>Si tu n'as jamais écrit de C#, commence par la semaine 0 : sept journées sur les bases du langage et la POO, expliquées à partir de ce que tu connais déjà en TypeScript. Les 30 jours suivent ensuite, avec le projet fil rouge OrderFlow, puis une semaine de compléments senior sur la concurrence et les design patterns.</p>
+    <p class="eyebrow">Programme intensif · .NET 10 / C# 14 · SQL Server</p>
+    <h1>De développeur fullstack à développeur .NET confirmé</h1>
+    <p>Soixante journées de 3 heures, du fonctionnement de la plateforme .NET jusqu'à une API en production. Le cœur du parcours porte sur la création d'APIs, EF Core et ADO.NET. Chaque journée contient un cours détaillé, des exemples complets, trois exercices corrigés et une tâche sur le projet fil rouge OrderFlow.</p>
     <div class="hero-actions">
-      <a class="btn primary" href="#${next.id}">${started ? "Reprendre : " + dayName(next) : "Commencer par les bases"}</a>
-      ${started ? "" : `<a class="btn" href="#j1">Je connais déjà C# : jour 1</a>`}
+      <a class="btn primary" href="#${next.id}">${started ? "Reprendre : " + next.name : "Commencer le jour 1"}</a>
+      ${started ? "" : `<a class="btn" href="#d21">Je connais déjà C# : module 2</a>`}
     </div>
   </div>
   <h2 class="home-h">Une journée type (3 h)</h2>
   <div class="split">
     <div><b>45 min</b><span>Lire le cours et les exemples</span></div>
-    <div><b>2 h</b><span>Exercices, puis le mini-projet</span></div>
+    <div><b>2 h</b><span>Exercices, puis la tâche du projet</span></div>
     <div><b>15 min</b><span>Noter ce que tu as appris, cocher la journée</span></div>
   </div>
-  <div class="weeks">${WEEKS.map(w => {
-    const list = SEQ.filter(it => it.week === w.n).map(it => `<li><a href="#${it.id}">${it.label.replace(/^J0/, "J")} · ${esc(it.title)}</a></li>`);
-    return `<div class="week-card${w.n === 0 || w.n === 5 ? " base" : ""}"><h2>Semaine ${w.n} · ${esc(w.title)}</h2><p>${esc(w.text)}</p><ul>${list.join("")}</ul></div>`;
+  <div class="weeks">${MODULES.map(m => {
+    const its = SEQ.filter(it => it.module === m);
+    const range = m.bonus ? `${its.length} journées` : `jours ${its[0].num} à ${its[its.length - 1].num}`;
+    const list = its.map(it => `<li><a href="#${it.id}">${it.label} · ${esc(it.title)}</a></li>`);
+    return `<div class="week-card"><h2>${m.bonus ? "" : "Module " + m.n + " · "}${esc(m.title)} <small>${range}</small></h2><p>${esc(m.text)}</p><ul>${list.join("")}</ul></div>`;
   }).join("")}</div>`;
 }
 
 function renderDay(it) {
   const i = SEQ.indexOf(it), p = SEQ[i - 1], nx = SEQ[i + 1], d = it.data;
-  const prev = p ? `<a class="btn" href="#${p.id}">← ${dayName(p)}</a>` : `<a class="btn" href="#accueil">← Accueil</a>`;
-  const next = nx ? `<a class="btn" href="#${nx.id}">${dayName(nx)} →</a>` : `<span></span>`;
-  const eyebrow = `${dayName(it)} · Semaine ${it.week} · ${esc(WEEKS[it.week].title)}`;
+  const prev = p ? `<a class="btn" href="#${p.id}">← ${p.name}</a>` : `<a class="btn" href="#accueil">← Accueil</a>`;
+  const next = nx ? `<a class="btn" href="#${nx.id}">${nx.name} →</a>` : `<span></span>`;
+  const eyebrow = `${it.name} · ${it.module.bonus ? "" : "Module " + it.module.n + " · "}${esc(it.module.title)}`;
   if (!d) return `<p class="eyebrow">${eyebrow}</p><h1>${esc(it.title)}</h1><p class="empty">Le contenu de cette journée n'est pas encore chargé.</p><div class="day-foot">${prev}${next}</div>`;
-  const isDone = !!state.days[it.id];
+  const isDone = !!state.days[it.key];
   return `<header class="day-head">
       <p class="eyebrow">${eyebrow}</p>
       <h1>${esc(d.title)}</h1>
@@ -305,7 +321,7 @@ function renderDay(it) {
     </section>
     <section class="block"><h2>Exercices <small>essaie avant d'ouvrir la solution</small></h2>
       ${(d.exercises || []).map((x, k) => {
-        const id = `${it.id}-${k}`;
+        const id = `${it.key}-${k}`;
         return `<div class="task"><div class="task-head"><span class="lvl ${esc(x.level)}">${esc(x.level)}</span><h3>${esc(x.title)}</h3>
           <label class="ex-done"><input type="checkbox" id="ex-${id}" data-ex="${id}" ${state.ex[id] ? "checked" : ""}> Fait</label></div>
           <div>${x.prompt}</div>
@@ -313,16 +329,16 @@ function renderDay(it) {
           <details><summary>Solution</summary><div>${codeBlock(x.solution)}</div></details></div>`;
       }).join("")}
     </section>
-    ${d.project ? `<section class="block"><h2>${it.week === 0 ? "Mini-projet Bibliothèque" : "Fil rouge OrderFlow"}</h2><div class="project">${d.project}</div></section>` : ""}
+    ${d.project ? `<section class="block"><h2>${LIBRARY.has(it.key) ? "Mini-projet Bibliothèque" : "Fil rouge OrderFlow"}</h2><div class="project">${d.project}</div></section>` : ""}
     ${(d.resources || []).length ? `<section class="block"><h2>Pour aller plus loin</h2><ul class="resources">${d.resources.map(r => `<li><a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.label)}</a></li>`).join("")}</ul></section>` : ""}
-    <div class="day-foot">${prev}<button class="btn ${isDone ? "is-done" : "primary"}" id="toggle-day" data-id="${it.id}" type="button">${isDone ? "Journée terminée ✓" : "Marquer la journée comme terminée"}</button>${next}</div>`;
+    <div class="day-foot">${prev}<button class="btn ${isDone ? "is-done" : "primary"}" id="toggle-day" data-key="${it.key}" type="button">${isDone ? "Journée terminée ✓" : "Marquer la journée comme terminée"}</button>${next}</div>`;
 }
 
 function route() {
   const it = byId.get(location.hash.slice(1));
   document.getElementById("view").innerHTML = it ? renderDay(it) : renderHome();
   renderNav(it?.id);
-  document.title = it ? `${it.label} · ${it.title} · Parcours .NET` : "Parcours .NET 30 jours";
+  document.title = it ? `${it.name} · ${it.title} · Parcours .NET` : "Parcours .NET 60 jours";
   document.getElementById("side").classList.remove("open");
   document.getElementById("menu").setAttribute("aria-expanded", "false");
   window.scrollTo(0, 0);
@@ -339,11 +355,11 @@ document.addEventListener("click", e => {
     return;
   }
   if (e.target.id === "toggle-day") {
-    const id = e.target.dataset.id;
-    state.days[id] = !state.days[id]; save();
-    e.target.className = "btn " + (state.days[id] ? "is-done" : "primary");
-    e.target.textContent = state.days[id] ? "Journée terminée ✓" : "Marquer la journée comme terminée";
-    renderNav(id);
+    const key = e.target.dataset.key;
+    state.days[key] = !state.days[key]; save();
+    e.target.className = "btn " + (state.days[key] ? "is-done" : "primary");
+    e.target.textContent = state.days[key] ? "Journée terminée ✓" : "Marquer la journée comme terminée";
+    renderNav(location.hash.slice(1));
   }
   if (e.target.id === "menu") {
     const open = document.getElementById("side").classList.toggle("open");

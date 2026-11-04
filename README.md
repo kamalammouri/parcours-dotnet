@@ -1,10 +1,16 @@
 # Parcours .NET
 
-Cours .NET 10 / C# 14 pour passer de développeur fullstack à développeur .NET confirmé, à raison de 3 h par jour.
+Cours .NET 10 / C# 14 en 60 jours (3 h par jour) pour passer de développeur fullstack à développeur .NET confirmé. Base de données : SQL Server.
 
-- **Semaine 0 · Bases de C#** : types, conditions, méthodes, classes, POO, class vs struct vs record (B1 à B7)
-- **Semaines 1 à 4** : C# avancé, ASP.NET Core, EF Core, architecture, tests, production (J1 à J30)
-- **Semaine 5 · Compléments senior** : concurrence et design patterns (J31 à J35)
+| Module | Jours | Contenu |
+|---|---|---|
+| 1 · Fondamentaux .NET et C# | 1 à 20 | Plateforme, projets, syntaxe, POO, class/struct/record, collections, génériques, LINQ, JSON, async, concurrence |
+| 2 · SQL Server et ADO.NET | 21 à 26 | SQL, connexions, commandes, paramètres, transactions, procédures stockées, bulk, Dapper |
+| 3 · Maîtrise d'EF Core | 27 à 36 | Modélisation, relations, migrations, requêtes, change tracker, concurrence, performance, tests |
+| 4 · Créer des APIs avec ASP.NET Core | 37 à 49 | HTTP/REST, middleware, DI, controllers, Minimal APIs, validation, erreurs, OpenAPI, JWT, sécurité, tests |
+| 5 · Architecture, patterns et tests | 50 à 56 | SOLID, Clean Architecture, design patterns, CQRS, DDD |
+| 6 · Mise en production | 57 à 60 | Cache, jobs, Docker, CI/CD, entretien |
+| Bonus | 7 journées | Performance, observabilité, SignalR, anti-patterns, documentation |
 
 Chaque journée contient un cours, des exemples de code, trois exercices corrigés et une tâche sur le projet fil rouge OrderFlow.
 
@@ -14,5 +20,5 @@ La progression est enregistrée dans le navigateur (localStorage), séparément 
 
 ## Structure
 
-- `index.html` : l'interface (sommaire, rendu des journées, progression)
-- `week0a.js` … `week5b.js` : le contenu, une entrée `window.COURSE.push({...})` par journée
+- `index.html` : l'interface et l'ordre du parcours (`MODULES`)
+- `*.js` : le contenu, une entrée `window.COURSE.push({...})` par journée
