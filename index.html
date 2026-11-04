@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#2f55d4">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Parcours .NET 30 jours</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout : sommaire fixe à gauche (semaine 0 + 30 jours), contenu du jour à droite ; sur mobile le sommaire devient un tiroir. */
+:root {
+  --bg: #f5f6f8; --panel: #ffffff; --fg: #171a21; --muted: #5d6474; --line: #dde1e8;
+  --accent: #2f55d4; --accent-soft: #e6ecfd; --ok: #1d8a5b; --ok-soft: #e2f4ea;
+  --warn: #a8620b; --warn-soft: #fbf0df; --hard: #b3304a; --hard-soft: #fbe6ea;
+  --code-bg: #f0f2f6; --code-fg: #1e2330;
+  --tk-kw: #2f55d4; --tk-str: #1d7a4e; --tk-com: #7c8394; --tk-num: #a8620b; --tk-type: #8a3fb8; --tk-fn: #b3304a;
+  --f-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "JetBrains Mono", Consolas, "Cascadia Mono", monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #12151b; --panel: #1a1e26; --fg: #e6e9ef; --muted: #9aa2b2; --line: #2b313d;
+  --accent: #7d9bff; --accent-soft: #232c45; --ok: #4fc38c; --ok-soft: #173327;
+  --warn: #e2a24c; --warn-soft: #3a2c16; --hard: #f07a90; --hard-soft: #3b1e26;
+  --code-bg: #0e1116; --code-fg: #dfe3ea;
+  --tk-kw: #8fa8ff; --tk-str: #7fd3a4; --tk-com: #6f7788; --tk-num: #e8b26a; --tk-type: #d09cf0; --tk-fn: #f39aab;
+  color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #12151b; --panel: #1a1e26; --fg: #e6e9ef; --muted: #9aa2b2; --line: #2b313d;
+  --accent: #7d9bff; --accent-soft: #232c45; --ok: #4fc38c; --ok-soft: #173327;
+  --warn: #e2a24c; --warn-soft: #3a2c16; --hard: #f07a90; --hard-soft: #3b1e26;
+  --code-bg: #0e1116; --code-fg: #dfe3ea;
+  --tk-kw: #8fa8ff; --tk-str: #7fd3a4; --tk-com: #6f7788; --tk-num: #e8b26a; --tk-type: #d09cf0; --tk-fn: #f39aab;
+  color-scheme: dark }
+
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font: 17px/1.6 var(--f-body); }
+a { color: var(--accent); }
+code { font: .88em var(--f-mono); background: var(--code-bg); padding: .1em .35em; border-radius: 4px; }
+h1, h2, h3 { font-family: var(--f-display); line-height: 1.2; text-wrap: balance; }
+button { font: inherit; cursor: pointer; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.app { display: grid; grid-template-columns: 290px minmax(0, 1fr); min-height: 100vh; }
+.side { position: sticky; top: 0; height: 100vh; overflow-y: auto; border-right: 1px solid var(--line); background: var(--panel); padding-block: 20px 32px; padding-inline: 18px; }
+.brand { font: 700 1.25rem var(--f-display); margin: 0 0 4px; }
+.brand a { color: var(--fg); text-decoration: none; }
+.brand-sub { color: var(--muted); font-size: .9rem; margin: 0 0 16px; }
+.bar { height: 6px; background: var(--line); border-radius: 3px; overflow: hidden; }
+.bar > i { display: block; height: 100%; background: var(--ok); width: 0; transition: width .3s; }
+.bar-label { font-size: .82rem; color: var(--muted); margin: 6px 0 18px; font-variant-numeric: tabular-nums; }
+.wk { margin-bottom: 18px; }
+.wk h2 { font-size: .74rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 6px; font-family: var(--f-body); font-weight: 600; }
+.wk ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.wk a { display: grid; grid-template-columns: 34px 1fr 16px; align-items: center; gap: 6px; padding: 6px 8px; border-radius: 6px; color: var(--fg); text-decoration: none; font-size: .93rem; line-height: 1.3; }
+.wk a:hover { background: var(--bg); }
+.wk a[aria-current="page"] { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+.wk .n { font: 600 .78rem var(--f-mono); color: var(--muted); font-variant-numeric: tabular-nums; }
+.wk .chk { width: 14px; height: 14px; border-radius: 50%; border: 1.5px solid var(--line); }
+.wk a.done .chk { background: var(--ok); border-color: var(--ok); }
+.wk a.pending { opacity: .5; }
+
+.main { padding-block: 32px 80px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.wrap { max-width: 860px; margin: 0 auto; }
+.topbar { display: none; }
+
+.eyebrow { font: 600 .8rem var(--f-mono); color: var(--accent); letter-spacing: .04em; margin: 0 0 8px; }
+.day-head h1 { font-size: clamp(1.8rem, 4vw, 2.6rem); margin: 0 0 10px; }
+.summary { color: var(--muted); font-size: 1.1rem; margin: 0 0 18px; max-width: 65ch; }
+.timing { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 28px; padding: 0; list-style: none; }
+.timing li { font-size: .85rem; padding: 4px 10px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); }
+.timing b { font-family: var(--f-mono); font-weight: 600; }
+
+section.block { margin: 0 0 40px; }
+section.block > h2 { font-size: 1.45rem; margin: 0 0 14px; padding-bottom: 8px; border-bottom: 1px solid var(--line); display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px; }
+section.block > h2 small { font: 500 .85rem var(--f-body); color: var(--muted); }
+.objectives { margin: 0; padding-left: 1.2em; }
+.lesson { max-width: 70ch; }
+.lesson h3 { font-size: 1.15rem; margin: 26px 0 8px; }
+.lesson p, .lesson li { margin: 0 0 10px; }
+.lesson pre { background: var(--code-bg); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; overflow-x: auto; font: 13.5px/1.55 var(--f-mono); }
+.lesson pre code { background: none; padding: 0; }
+.lesson table { border-collapse: collapse; display: block; overflow-x: auto; margin: 12px 0; font-size: .95rem; }
+.lesson th, .lesson td { border: 1px solid var(--line); padding: 6px 10px; text-align: left; vertical-align: top; }
+.lesson th { background: var(--panel); }
+.note { border: 1px solid var(--line); background: var(--panel); border-radius: 8px; padding: 12px 16px; margin: 18px 0; }
+.note::before { content: "Niveau senior"; display: block; font: 600 .74rem var(--f-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--accent); margin-bottom: 4px; }
+
+.ex { margin: 0 0 24px; }
+.ex h3 { font-size: 1.05rem; margin: 0 0 8px; }
+.ex .explain { margin: 8px 0 0; color: var(--muted); font-size: .95rem; }
+.code { position: relative; background: var(--code-bg); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.code pre { margin: 0; padding: 14px 16px; overflow-x: auto; font: 13.5px/1.55 var(--f-mono); color: var(--code-fg); tab-size: 4; }
+.code pre code { background: none; padding: 0; font: inherit; }
+.copy { position: absolute; top: 8px; right: 8px; font-size: .75rem; padding: 3px 9px; border: 1px solid var(--line); background: var(--panel); color: var(--muted); border-radius: 5px; }
+.copy:hover { color: var(--fg); }
+.token.keyword, .token.boolean, .token.important { color: var(--tk-kw); }
+.token.string, .token.char, .token.attr-value, .token.interpolation-string { color: var(--tk-str); }
+.token.comment, .token.prolog { color: var(--tk-com); font-style: italic; }
+.token.number { color: var(--tk-num); }
+.token.class-name, .token.namespace, .token.builtin { color: var(--tk-type); }
+.token.function { color: var(--tk-fn); }
+.token.punctuation, .token.operator { color: var(--muted); }
+
+.task { border: 1px solid var(--line); background: var(--panel); border-radius: 10px; padding: 16px 18px; margin: 0 0 14px; }
+.task-head { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 8px; }
+.task-head h3 { font-size: 1.05rem; margin: 0; flex: 1 1 240px; }
+.lvl { font: 600 .72rem var(--f-mono); text-transform: uppercase; letter-spacing: .06em; padding: 3px 8px; border-radius: 4px; }
+.lvl.facile { background: var(--ok-soft); color: var(--ok); }
+.lvl.moyen { background: var(--warn-soft); color: var(--warn); }
+.lvl.difficile { background: var(--hard-soft); color: var(--hard); }
+.task details { margin-top: 10px; }
+.task summary { cursor: pointer; color: var(--accent); font-weight: 600; font-size: .95rem; }
+.task details > div { margin-top: 8px; }
+.ex-done { display: flex; align-items: center; gap: 6px; font-size: .85rem; color: var(--muted); }
+
+.project { border-left: 3px solid var(--accent); background: var(--accent-soft); padding: 14px 18px; border-radius: 0 8px 8px 0; }
+.resources { margin: 0; padding-left: 1.2em; }
+
+.day-foot { display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; align-items: center; border-top: 1px solid var(--line); padding-top: 20px; }
+.btn { border: 1px solid var(--line); background: var(--panel); color: var(--fg); padding: 9px 16px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: .95rem; }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--panel); }
+.btn.is-done { background: var(--ok); border-color: var(--ok); color: var(--panel); }
+
+/* Accueil */
+.hero h1 { font-size: clamp(2rem, 5vw, 3.1rem); margin: 0 0 12px; }
+.hero p { max-width: 62ch; color: var(--muted); font-size: 1.1rem; margin: 0 0 22px; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.home-h { font-size: 1.2rem; margin: 36px 0 12px; }
+.split { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 0 0 36px; }
+.split div { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; }
+.split b { display: block; font: 700 1.5rem var(--f-display); }
+.split span { color: var(--muted); font-size: .92rem; }
+.weeks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.week-card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 18px; }
+.week-card.base { grid-column: 1 / -1; border-color: var(--accent); }
+.week-card h2 { font-size: 1.15rem; margin: 0 0 4px; }
+.week-card p { margin: 0 0 10px; color: var(--muted); font-size: .95rem; }
+.week-card ul { margin: 0; padding-left: 1.1em; font-size: .93rem; }
+.week-card.base ul { columns: 2; column-gap: 24px; }
+.week-card a { text-decoration: none; }
+.empty { color: var(--muted); font-style: italic; }
+
+@media (max-width: 860px) {
+  .app { grid-template-columns: minmax(0, 1fr); }
+  .side { position: fixed; inset: 0 auto 0 0; width: min(320px, 88vw); z-index: 20; transform: translateX(-100%); transition: transform .2s; padding-top: calc(20px + env(safe-area-inset-top, 0px)); padding-left: max(18px, env(safe-area-inset-left, 0px)); }
+  .side.open { transform: none; box-shadow: 0 0 0 100vmax rgb(0 0 0 / .35); }
+  .topbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 20px; }
+  .split, .weeks { grid-template-columns: minmax(0, 1fr); }
+  .week-card.base ul { columns: 1; }
+  .main { padding-top: 20px; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+</head>
+<body>
+<div class="app">
+  <nav class="side" id="side" aria-label="Programme">
+    <p class="brand"><a href="#accueil">Parcours .NET</a></p>
+    <p class="brand-sub">Bases + 35 jours · 3 h par jour · .NET 10</p>
+    <div class="bar"><i id="bar"></i></div>
+    <p class="bar-label" id="bar-label"></p>
+    <div id="nav"></div>
+  </nav>
+  <main class="main">
+    <div class="wrap">
+      <div class="topbar">
+        <button class="btn" id="menu" type="button" aria-controls="side" aria-expanded="false">Programme</button>
+        <span class="bar-label" id="bar-label-m"></span>
+      </div>
+      <div id="view"></div>
+    </div>
+  </main>
+</div>
+
+<script>window.Prism = { manual: true };</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-typescript.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-docker.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+<script src="week0a.js"></script>
+<script src="week0b.js"></script>
+<script src="week1.js"></script>
+<script src="week2.js"></script>
+<script src="week3.js"></script>
+<script src="week4a.js"></script>
+<script src="week4b.js"></script>
+<script src="week5a.js"></script>
+<script src="week5b.js"></script>
+<script>
+const WEEKS = [
+  { n: 0, title: "Bases de C#", text: "Pour démarrer de zéro : types, conditions, méthodes, classes, POO, class vs struct vs record, null et exceptions. Compare chaque notion avec TypeScript." },
+  { n: 1, title: "C# et le runtime", text: "Le langage en profondeur : types, LINQ, async, mémoire." },
+  { n: 2, title: "ASP.NET Core et les données", text: "API, injection de dépendances, EF Core, configuration, JWT." },
+  { n: 3, title: "Architecture et qualité", text: "Clean Architecture, CQRS, DDD, tests unitaires et d'intégration." },
+  { n: 4, title: "Production et performance", text: "Cache, jobs, perf, observabilité, Docker, CI/CD, entretien." },
+  { n: 5, title: "Compléments senior", text: "Concurrence et multithreading, puis les design patterns en C# moderne et les anti-patterns. La concurrence peut se faire après le jour 6, les patterns après le jour 15." },
+];
+// Titres de repli si un fichier de contenu manque
+const BASE = ["Premier programme, variables et types","Conditions, boucles et méthodes","Classes et objets","POO : encapsulation et héritage","POO : polymorphisme et interfaces","Class, struct et record","Enums, null, exceptions et chaînes"];
+const PLAN = ["SDK, CLI et système de types","Classes, records, interfaces","Nullable, génériques, exceptions","Collections et LINQ","Delegates, lambdas, events","async/await et Task","Révision : GC et IDisposable",
+  "Pipeline et injection de dépendances","Routing, validation, OpenAPI","EF Core : bases","EF Core avancé","Configuration et logging","Authentification JWT et CORS","Révision : Dapper vs EF",
+  "SOLID et Clean Architecture","CQRS et handlers","Tests unitaires","Tests d'intégration","DDD tactique","Erreurs, Result pattern, résilience","Révision : code review",
+  "Caching","Background jobs et messaging","Performance et benchmarks","Observabilité et Aspire","Docker et CI/CD","SignalR et gRPC","Projet final : durcissement","Documentation et architecture","Préparation entretien senior",
+  "Concurrence et multithreading","Concurrence asynchrone et coordination","Patterns créationnels et structurels","Patterns comportementaux","Patterns en pratique et anti-patterns"];
+
+const weekOf = n => n <= 7 ? 1 : n <= 14 ? 2 : n <= 21 ? 3 : n <= 30 ? 4 : 5;
+// Séquence complète : b1..b7 puis j1..j30 ; l'id sert d'ancre (#b3, #j12) et de clé de progression
+const SEQ = [
+  ...BASE.map((t, i) => ({ id: "b" + (i + 1), week: 0, label: "B" + (i + 1), title: t })),
+  ...PLAN.map((t, i) => ({ id: "j" + (i + 1), week: weekOf(i + 1), label: "J" + String(i + 1).padStart(2, "0"), title: t })),
+];
+const content = new Map((window.COURSE || []).map(d => [(d.week === 0 ? "b" : "j") + d.day, d]));
+for (const it of SEQ) { const d = content.get(it.id); if (d) { it.data = d; it.title = d.title; } }
+const byId = new Map(SEQ.map(it => [it.id, it]));
+
+const KEY = "dotnet30-progress";
+let state = { days: {}, ex: {} };
+try { state = Object.assign(state, JSON.parse(localStorage.getItem(KEY)) || {}); } catch {}
+// anciennes clés numériques ("6") → "j6"
+for (const k of Object.keys(state.days)) if (/^\d+$/.test(k)) { state.days["j" + k] = state.days[k]; delete state.days[k]; }
+for (const k of Object.keys(state.ex)) if (/^\d/.test(k)) { state.ex["j" + k] = state.ex[k]; delete state.ex[k]; }
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch {} };
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const dayName = it => it.week === 0 ? `Bases ${it.id.slice(1)}` : `Jour ${it.id.slice(1)}`;
+
+// ponytail: détection du langage par heuristique, ajouter un champ "lang" aux exemples si elle se trompe
+function lang(code) {
+  if (/^\s*FROM\s/m.test(code) && /^\s*(RUN|COPY|WORKDIR|ENTRYPOINT)\s/m.test(code)) return "docker";
+  if (/^\s*(on|jobs|services):\s*$/m.test(code) || /^\s*- (uses|run|name):/m.test(code)) return "yaml";
+  if (/^\s*(dotnet|docker|npm|ng|git|curl) /m.test(code) && !/;\s*$/m.test(code)) return "bash";
+  if (/^\s*[{[]/.test(code) && /"\s*:/.test(code) && !/;\s*$/m.test(code)) return "json";
+  if (/\bimport\s+\{|\bexport\s+(class|const|function|interface)|@Injectable|@Component/.test(code)) return "typescript";
+  return "csharp";
+}
+function codeBlock(code) {
+  code = String(code || "").replace(/^\n+|\s+$/g, "");
+  const l = lang(code), g = window.Prism && Prism.languages[l];
+  const html = g ? Prism.highlight(code, g, l) : esc(code);
+  return `<div class="code"><button class="copy" type="button">Copier</button><pre><code class="language-${l}">${html}</code></pre></div>`;
+}
+
+function renderNav(currentId) {
+  const done = SEQ.filter(it => state.days[it.id]).length;
+  document.getElementById("bar").style.width = (done / SEQ.length * 100) + "%";
+  const label = `${done} / ${SEQ.length} journées terminées`;
+  document.getElementById("bar-label").textContent = label;
+  document.getElementById("bar-label-m").textContent = label;
+  document.getElementById("nav").innerHTML = WEEKS.map(w => {
+    const items = SEQ.filter(it => it.week === w.n).map(it => {
+      const cls = [state.days[it.id] ? "done" : "", it.data ? "" : "pending"].join(" ");
+      return `<li><a href="#${it.id}" class="${cls}" ${it.id === currentId ? 'aria-current="page"' : ""}><span class="n">${it.label}</span><span>${esc(it.title)}</span><span class="chk" aria-label="${state.days[it.id] ? "terminé" : "à faire"}"></span></a></li>`;
+    });
+    return `<div class="wk"><h2>Semaine ${w.n} · ${esc(w.title)}</h2><ol>${items.join("")}</ol></div>`;
+  }).join("");
+}
+
+function renderHome() {
+  const next = SEQ.find(it => !state.days[it.id]) || SEQ[SEQ.length - 1];
+  const started = SEQ.some(it => state.days[it.id]);
+  return `<div class="hero">
+    <p class="eyebrow">Programme intensif · .NET 10 / C# 14</p>
+    <h1>De développeur fullstack à .NET confirmé</h1>
+    <p>Si tu n'as jamais écrit de C#, commence par la semaine 0 : sept journées sur les bases du langage et la POO, expliquées à partir de ce que tu connais déjà en TypeScript. Les 30 jours suivent ensuite, avec le projet fil rouge OrderFlow, puis une semaine de compléments senior sur la concurrence et les design patterns.</p>
+    <div class="hero-actions">
+      <a class="btn primary" href="#${next.id}">${started ? "Reprendre : " + dayName(next) : "Commencer par les bases"}</a>
+      ${started ? "" : `<a class="btn" href="#j1">Je connais déjà C# : jour 1</a>`}
+    </div>
+  </div>
+  <h2 class="home-h">Une journée type (3 h)</h2>
+  <div class="split">
+    <div><b>45 min</b><span>Lire le cours et les exemples</span></div>
+    <div><b>2 h</b><span>Exercices, puis le mini-projet</span></div>
+    <div><b>15 min</b><span>Noter ce que tu as appris, cocher la journée</span></div>
+  </div>
+  <div class="weeks">${WEEKS.map(w => {
+    const list = SEQ.filter(it => it.week === w.n).map(it => `<li><a href="#${it.id}">${it.label.replace(/^J0/, "J")} · ${esc(it.title)}</a></li>`);
+    return `<div class="week-card${w.n === 0 || w.n === 5 ? " base" : ""}"><h2>Semaine ${w.n} · ${esc(w.title)}</h2><p>${esc(w.text)}</p><ul>${list.join("")}</ul></div>`;
+  }).join("")}</div>`;
+}
+
+function renderDay(it) {
+  const i = SEQ.indexOf(it), p = SEQ[i - 1], nx = SEQ[i + 1], d = it.data;
+  const prev = p ? `<a class="btn" href="#${p.id}">← ${dayName(p)}</a>` : `<a class="btn" href="#accueil">← Accueil</a>`;
+  const next = nx ? `<a class="btn" href="#${nx.id}">${dayName(nx)} →</a>` : `<span></span>`;
+  const eyebrow = `${dayName(it)} · Semaine ${it.week} · ${esc(WEEKS[it.week].title)}`;
+  if (!d) return `<p class="eyebrow">${eyebrow}</p><h1>${esc(it.title)}</h1><p class="empty">Le contenu de cette journée n'est pas encore chargé.</p><div class="day-foot">${prev}${next}</div>`;
+  const isDone = !!state.days[it.id];
+  return `<header class="day-head">
+      <p class="eyebrow">${eyebrow}</p>
+      <h1>${esc(d.title)}</h1>
+      <p class="summary">${esc(d.summary || "")}</p>
+      <ul class="timing"><li><b>45 min</b> cours</li><li><b>2 h</b> pratique</li><li><b>15 min</b> notes</li></ul>
+    </header>
+    <section class="block"><h2>Objectifs</h2><ul class="objectives">${(d.objectives || []).map(o => `<li>${esc(o)}</li>`).join("")}</ul></section>
+    <section class="block"><h2>Cours</h2><div class="lesson">${d.lesson || ""}</div></section>
+    <section class="block"><h2>Exemples <small>${(d.examples || []).length} programmes</small></h2>
+      ${(d.examples || []).map(e => `<div class="ex"><h3>${esc(e.title)}</h3>${codeBlock(e.code)}${e.explain ? `<p class="explain">${e.explain}</p>` : ""}</div>`).join("")}
+    </section>
+    <section class="block"><h2>Exercices <small>essaie avant d'ouvrir la solution</small></h2>
+      ${(d.exercises || []).map((x, k) => {
+        const id = `${it.id}-${k}`;
+        return `<div class="task"><div class="task-head"><span class="lvl ${esc(x.level)}">${esc(x.level)}</span><h3>${esc(x.title)}</h3>
+          <label class="ex-done"><input type="checkbox" id="ex-${id}" data-ex="${id}" ${state.ex[id] ? "checked" : ""}> Fait</label></div>
+          <div>${x.prompt}</div>
+          ${x.hint ? `<details><summary>Indice</summary><div>${x.hint}</div></details>` : ""}
+          <details><summary>Solution</summary><div>${codeBlock(x.solution)}</div></details></div>`;
+      }).join("")}
+    </section>
+    ${d.project ? `<section class="block"><h2>${it.week === 0 ? "Mini-projet Bibliothèque" : "Fil rouge OrderFlow"}</h2><div class="project">${d.project}</div></section>` : ""}
+    ${(d.resources || []).length ? `<section class="block"><h2>Pour aller plus loin</h2><ul class="resources">${d.resources.map(r => `<li><a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.label)}</a></li>`).join("")}</ul></section>` : ""}
+    <div class="day-foot">${prev}<button class="btn ${isDone ? "is-done" : "primary"}" id="toggle-day" data-id="${it.id}" type="button">${isDone ? "Journée terminée ✓" : "Marquer la journée comme terminée"}</button>${next}</div>`;
+}
+
+function route() {
+  const it = byId.get(location.hash.slice(1));
+  document.getElementById("view").innerHTML = it ? renderDay(it) : renderHome();
+  renderNav(it?.id);
+  document.title = it ? `${it.label} · ${it.title} · Parcours .NET` : "Parcours .NET 30 jours";
+  document.getElementById("side").classList.remove("open");
+  document.getElementById("menu").setAttribute("aria-expanded", "false");
+  window.scrollTo(0, 0);
+  const cur = document.querySelector('.wk a[aria-current="page"]');
+  if (cur) cur.scrollIntoView({ block: "nearest" });
+}
+
+document.addEventListener("click", e => {
+  const copy = e.target.closest(".copy");
+  if (copy) {
+    const pre = copy.nextElementSibling;
+    navigator.clipboard.writeText(pre.textContent).then(() => { copy.textContent = "Copié"; setTimeout(() => copy.textContent = "Copier", 1500); })
+      .catch(() => { const r = document.createRange(); r.selectNodeContents(pre); const s = getSelection(); s.removeAllRanges(); s.addRange(r); });
+    return;
+  }
+  if (e.target.id === "toggle-day") {
+    const id = e.target.dataset.id;
+    state.days[id] = !state.days[id]; save();
+    e.target.className = "btn " + (state.days[id] ? "is-done" : "primary");
+    e.target.textContent = state.days[id] ? "Journée terminée ✓" : "Marquer la journée comme terminée";
+    renderNav(id);
+  }
+  if (e.target.id === "menu") {
+    const open = document.getElementById("side").classList.toggle("open");
+    e.target.setAttribute("aria-expanded", String(open));
+  }
+});
+document.addEventListener("change", e => { const id = e.target.dataset.ex; if (id) { state.ex[id] = e.target.checked; save(); } });
+window.addEventListener("hashchange", route);
+route();
+</script>
+
+</body>
+</html>
