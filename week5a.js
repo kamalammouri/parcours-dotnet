@@ -11,7 +11,7 @@ window.COURSE.push({
     "Utiliser correctement ConcurrentDictionary (et son piège GetOrAdd) et les collections immuables",
     "Paralléliser un calcul CPU avec Parallel.For et PLINQ, et savoir quand ne pas le faire"
   ],
-  lesson: `<p><strong>Prérequis :</strong> le jour 17 (async/await). Tu dois être à l'aise avec <code>Task</code> et <code>async/await</code>.</p>
+  lesson: `<p><strong>Prérequis :</strong> la journée « async/await et Task ». Tu dois être à l'aise avec <code>Task</code> et <code>async/await</code>.</p>
 
 <h3>Processus, threads, ThreadPool et Task</h3>
 <p>Un <strong>processus</strong> est ton application lancée : il a sa propre mémoire. À l'intérieur, un ou plusieurs <strong>threads</strong> exécutent du code en parallèle et <strong>partagent la même mémoire</strong>. C'est exactement là que naissent les problèmes : deux threads qui lisent et écrivent la même variable en même temps.</p>
@@ -386,7 +386,7 @@ window.COURSE.push({
     "Orchestrer des tâches avec Parallel.ForEachAsync, Task.WhenAll, Task.WhenAny et des timeouts",
     "Identifier les problèmes de concurrence typiques d'une API ASP.NET Core"
   ],
-  lesson: `<p><strong>Prérequis :</strong> le jour 19 (concurrence et multithreading). <code>BackgroundService</code>, utilisé dans la partie Channels, est approfondi au jour 58 : ici, il suffit de savoir que c'est une tâche qui tourne en arrière-plan dans l'application.</p>
+  lesson: `<p><strong>Prérequis :</strong> la journée « Concurrence et multithreading ». <code>BackgroundService</code>, utilisé dans la partie Channels, est approfondi dans le module « Mise en production » : ici, il suffit de savoir que c'est une tâche qui tourne en arrière-plan dans l'application.</p>
 
 <h3>Pourquoi on ne peut pas faire await dans un lock</h3>
 <p>Un <code>lock</code> appartient au <em>thread</em> qui l'a pris. Après un <code>await</code>, la suite du code peut reprendre sur <strong>un autre thread</strong>, qui ne possède pas le verrou. Le compilateur refuse donc <code>await</code> dans un <code>lock</code> (erreur CS1996). La solution est <code>SemaphoreSlim</code>, qui ne dépend pas du thread et propose <code>WaitAsync</code> :</p>

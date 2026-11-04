@@ -160,7 +160,7 @@ section.block > h2 small { font: 500 .85rem var(--f-body); color: var(--muted); 
 <div class="app">
   <nav class="side" id="side" aria-label="Programme">
     <p class="brand"><a href="#accueil">Parcours .NET</a></p>
-    <p class="brand-sub">60 jours + bonus · 3 h par jour · .NET 10</p>
+    <p class="brand-sub">62 jours + bonus · 3 h par jour · .NET 10</p>
     <div class="bar"><i id="bar"></i></div>
     <p class="bar-label" id="bar-label"></p>
     <div id="nav"></div>
@@ -197,6 +197,8 @@ section.block > h2 small { font: 500 .85rem var(--f-body); color: var(--muted); 
 <script src="week5b.js"></script>
 <script src="n-fond-a.js"></script>
 <script src="n-fond-b.js"></script>
+<script src="n-fond-c.js"></script>
+<script src="n-fond-d.js"></script>
 <script src="n-ado-a.js"></script>
 <script src="n-ado-b.js"></script>
 <script src="n-ef-a.js"></script>
@@ -206,8 +208,8 @@ section.block > h2 small { font: 500 .85rem var(--f-body); color: var(--muted); 
 <script>
 // Le parcours : chaque module liste les clés de contenu dans l'ordre (b1 = semaine 0 jour 1, j5 = ancien jour 5, sinon la clé du fichier)
 const MODULES = [
-  { n: 1, title: "Fondamentaux .NET et C#", text: "La plateforme, les projets, la syntaxe, la POO, class/struct/record, les collections, les génériques, LINQ, les fichiers et le JSON, l'asynchrone et la concurrence. Chaque notion est comparée à TypeScript.",
-    items: ["f-platform", "f-projects", "b1", "b2", "f-strings-dates", "b3", "b4", "b5", "b6", "b7", "f-collections", "f-generics", "j5", "j4", "f-linq-advanced", "f-files-json", "j6", "j7", "j31", "j32"] },
+  { n: 1, title: "Fondamentaux .NET et C#", text: "La plateforme, les projets, la syntaxe, la POO et ses mots-clés (public, static, const, abstract, sealed…), class/struct/record, les collections, les génériques, LINQ, les fichiers et le JSON, l'asynchrone et la concurrence. Chaque notion est comparée à TypeScript.",
+    items: ["f-platform", "f-projects", "b1", "b2", "f-strings-dates", "b3", "f-access-static", "b4", "f-class-keywords", "b5", "b6", "b7", "f-collections", "f-generics", "j5", "j4", "f-linq-advanced", "f-files-json", "j6", "j7", "j31", "j32"] },
   { n: 2, title: "SQL Server et ADO.NET", text: "Le SQL dont un développeur a besoin, puis ADO.NET de bout en bout : connexions, commandes, paramètres, transactions, procédures stockées, opérations en masse, et Dapper.",
     items: ["a-sql", "a-connect", "a-params", "a-transactions", "a-disconnected", "a-repository-dapper"] },
   { n: 3, title: "Maîtrise d'EF Core", text: "Modélisation, relations, migrations, requêtes, change tracker, concurrence, SQL brut, modélisation avancée, performance et tests.",
@@ -221,7 +223,7 @@ const MODULES = [
   { n: 7, bonus: true, title: "Bonus", text: "À faire quand tu veux, après le module concerné : performance, observabilité, temps réel, anti-patterns, durcissement, documentation et code review.",
     items: ["j24", "j25", "j27", "j35", "j28", "j29", "j21"] },
 ];
-const LIBRARY = new Set(["f-platform", "f-projects", "f-strings-dates", "b1", "b2", "b3", "b4", "b5", "b6", "b7"]);
+const LIBRARY = new Set(["f-platform", "f-projects", "f-strings-dates", "f-access-static", "f-class-keywords", "b1", "b2", "b3", "b4", "b5", "b6", "b7"]);
 
 const keyOf = d => d.key || (d.week === 0 ? "b" : "j") + d.day;
 const content = new Map((window.COURSE || []).map(d => [keyOf(d), d]));
@@ -281,10 +283,10 @@ function renderHome() {
   return `<div class="hero">
     <p class="eyebrow">Programme intensif · .NET 10 / C# 14 · SQL Server</p>
     <h1>De développeur fullstack à développeur .NET confirmé</h1>
-    <p>Soixante journées de 3 heures, du fonctionnement de la plateforme .NET jusqu'à une API en production. Le cœur du parcours porte sur la création d'APIs, EF Core et ADO.NET. Chaque journée contient un cours détaillé, des exemples complets, trois exercices corrigés et une tâche sur le projet fil rouge OrderFlow.</p>
+    <p>${SEQ.filter(it => !it.module.bonus).length} journées de 3 heures, du fonctionnement de la plateforme .NET jusqu'à une API en production. Le cœur du parcours porte sur la création d'APIs, EF Core et ADO.NET. Chaque journée contient un cours détaillé, des exemples complets, trois exercices corrigés et une tâche sur le projet fil rouge OrderFlow.</p>
     <div class="hero-actions">
       <a class="btn primary" href="#${next.id}">${started ? "Reprendre : " + next.name : "Commencer le jour 1"}</a>
-      ${started ? "" : `<a class="btn" href="#d21">Je connais déjà C# : module 2</a>`}
+      ${started ? "" : `<a class="btn" href="#${SEQ.find(it => it.module.n === 2).id}">Je connais déjà C# : module 2</a>`}
     </div>
   </div>
   <h2 class="home-h">Une journée type (3 h)</h2>

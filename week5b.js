@@ -12,7 +12,7 @@ window.COURSE.push({
     "Envelopper une API externe avec un Adapter et ajouter un cache avec un Decorator",
     "Reconnaître Facade et Proxy dans les bibliothèques .NET que tu utilises déjà"
   ],
-  lesson: `<p><em>Prérequis : le jour 50 (SOLID et Clean Architecture).</em></p>
+  lesson: `<p><em>Prérequis : la journée « SOLID et Clean Architecture ».</em></p>
 <h3>Qu'est-ce qu'un design pattern ?</h3>
 <p>Un design pattern est une solution éprouvée à un problème de conception qui revient souvent. Le terme vient du livre du « Gang of Four » (GoF, 1994), qui en décrit 23, classés en trois familles : <strong>créationnels</strong> (comment créer des objets), <strong>structurels</strong> (comment assembler des objets) et <strong>comportementaux</strong> (comment les objets collaborent, vu au J34).</p>
 <p>Un pattern n'est pas une bibliothèque à installer, c'est un <strong>vocabulaire</strong>. Dire « on met un Decorator de cache autour du repository » permet à toute l'équipe de comprendre la structure en une phrase. Retiens toujours la paire <strong>problème → solution</strong> : si tu n'as pas le problème, tu n'as pas besoin du pattern.</p>
@@ -421,7 +421,7 @@ window.COURSE.push({
     "Encapsuler une règle métier réutilisable avec le pattern Specification",
     "Choisir entre Command, Mediator et un simple appel de méthode"
   ],
-  lesson: `<p><em>Prérequis : le jour 51 (patterns créationnels et structurels). Command et Mediator reviennent au jour 53 avec CQRS.</em></p>
+  lesson: `<p><em>Prérequis : la journée « Patterns créationnels et structurels ». Command et Mediator reviennent ensuite dans la journée CQRS.</em></p>
 <h3>Strategy</h3>
 <p><strong>Problème :</strong> un algorithme varie selon le contexte (calcul des frais de livraison standard, express, retrait en magasin), et le <code>switch</code> grossit à chaque nouveau cas. <strong>Solution :</strong> une interface par algorithme (<code>IShippingStrategy</code>), une classe par variante, et le code appelant choisit la stratégie au lieu de contenir tous les cas. C'est le principe ouvert/fermé (J15) en action : ajouter une variante = ajouter une classe.</p>
 <p>Depuis .NET 8, les <strong>keyed services</strong> rendent Strategy très simple : <code>AddKeyedScoped&lt;IShippingStrategy, ExpressShipping&gt;("express")</code> à l'enregistrement, puis <code>[FromKeyedServices("express")]</code> dans un constructeur ou <code>sp.GetRequiredKeyedService&lt;IShippingStrategy&gt;(key)</code> quand la clé arrive à l'exécution.</p>
