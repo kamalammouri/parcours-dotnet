@@ -238,17 +238,20 @@ section.block > h2 small { font: 500 .85rem var(--f-body); color: var(--muted); 
 <script src="v2-ch5a.js"></script>
 <script src="v2-ch5b.js"></script>
 <script src="v2-ch6.js"></script>
-<script src="n-ado-a.js"></script>
-<script src="n-ado-b.js"></script>
-<script src="n-ef-a.js"></script>
-<script src="n-ef-b.js"></script>
-<script src="n-api-a.js"></script>
-<script src="n-api-b.js"></script>
-<script src="week2.js"></script>
-<script src="week3.js"></script>
-<script src="week4a.js"></script>
-<script src="week4b.js"></script>
-<script src="week5b.js"></script>
+<script src="v3-sql.js"></script>
+<script src="v3-ado-a.js"></script>
+<script src="v3-ado-b.js"></script>
+<script src="v3-ef-a.js"></script>
+<script src="v3-ef-b.js"></script>
+<script src="v3-ef-c.js"></script>
+<script src="v3-api-a.js"></script>
+<script src="v3-api-b.js"></script>
+<script src="v3-api-c.js"></script>
+<script src="v3-api-d.js"></script>
+<script src="v3-arch.js"></script>
+<script src="v3-patterns.js"></script>
+<script src="v3-prod.js"></script>
+<script src="v3-bonus.js"></script>
 <script>
 // Le parcours : parties → chapitres → clés de leçons, dans l'ordre. L'ancre de chaque leçon est sa clé (#l-list).
 const PARTS = [
@@ -261,18 +264,33 @@ const PARTS = [
       { title: "Collections, génériques et LINQ", items: ["l-list", "l-dictionary", "l-other-collections", "l-choose-collection", "l-generics", "l-generic-constraints", "l-delegates", "l-lambdas", "l-events", "l-linq-filter", "l-linq-aggregate", "l-linq-join-deferred", "l-extension-methods"] },
       { title: "Fichiers, JSON et asynchrone", items: ["l-files", "l-json", "l-why-async", "l-async-await", "l-async-cancel-errors", "l-threads-race", "l-lock-concurrent", "l-parallel-tasks"] },
     ] },
-  { title: "SQL Server et ADO.NET", text: "Le SQL dont un développeur a besoin, puis ADO.NET de bout en bout : connexions, commandes, paramètres, transactions, procédures stockées, opérations en masse, et Dapper.",
-    chapters: [{ title: "SQL Server et ADO.NET", items: ["a-sql", "a-connect", "a-params", "a-transactions", "a-disconnected", "a-repository-dapper"] }] },
-  { title: "Maîtrise d'EF Core", text: "Modélisation, relations, migrations, requêtes, change tracker, concurrence, SQL brut, modélisation avancée, performance et tests.",
-    chapters: [{ title: "EF Core", items: ["e-intro", "e-modeling", "e-relations", "e-migrations", "e-querying", "e-tracking", "e-concurrency-sql", "e-advanced-modeling", "e-performance", "e-testing-synthesis"] }] },
-  { title: "Créer des APIs avec ASP.NET Core", text: "HTTP et REST, hébergement et middleware, injection de dépendances, controllers et Minimal APIs, DTOs et validation, erreurs et logging, CRUD complet, OpenAPI, authentification, sécurité et tests d'intégration.",
-    chapters: [{ title: "APIs ASP.NET Core", items: ["w-http-rest", "w-hosting", "j8", "w-controllers", "w-minimal-apis", "w-dtos-validation", "w-errors-logging", "j12", "w-crud-advanced", "w-openapi-versioning", "j13", "w-security-httpclient", "j18"] }] },
-  { title: "Architecture, patterns et tests", text: "SOLID et Clean Architecture, design patterns, CQRS, tests unitaires, DDD et gestion des erreurs.",
-    chapters: [{ title: "Architecture", items: ["j15", "j33", "j34", "j16", "j17", "j19", "j20"] }] },
-  { title: "Mise en production", text: "Cache, tâches de fond et messaging, Docker et CI/CD, puis la préparation à l'entretien.",
-    chapters: [{ title: "Production", items: ["j22", "j23", "j26", "j30"] }] },
-  { bonus: true, title: "Bonus", text: "À faire quand tu veux, après la partie concernée : performance, observabilité, temps réel, anti-patterns, durcissement, documentation et code review.",
-    chapters: [{ title: "Bonus", items: ["j24", "j25", "j27", "j35", "j28", "j29", "j21"] }] },
+  { title: "SQL Server et ADO.NET", text: "Le SQL dont un développeur a besoin, puis ADO.NET pas à pas : connexions, commandes, lecture, paramètres, transactions, procédures stockées, insertion en masse et Dapper.",
+    chapters: [
+      { title: "SQL Server pour développeurs", items: ["sql-install","sql-tables","sql-select","sql-joins","sql-group","sql-modify","sql-indexes","sql-transactions"] },
+      { title: "ADO.NET : les bases", items: ["ado-intro","ado-connection","ado-command","ado-reader","ado-params","ado-async"] },
+      { title: "ADO.NET avancé et Dapper", items: ["ado-transactions","ado-procs","ado-bulk","ado-repository","ado-dapper"] } ] },
+  { title: "Maîtrise d'EF Core", text: "Du premier DbContext aux migrations en équipe, les relations et les requêtes, puis le change tracker, la concurrence, la performance et les tests.",
+    chapters: [
+      { title: "EF Core : les bases", items: ["ef-what","ef-setup","ef-first-crud","ef-conventions","ef-annotations-fluent","ef-migrations","ef-migrations-team"] },
+      { title: "Relations et requêtes", items: ["ef-one-to-many","ef-one-to-one","ef-many-to-many","ef-loading","ef-linq-queries","ef-raw-sql"] },
+      { title: "Suivi des modifications, performance et tests", items: ["ef-change-tracker","ef-savechanges-transactions","ef-concurrency","ef-bulk","ef-advanced-modeling","ef-performance","ef-testing","ef-vs-dapper"] } ] },
+  { title: "Créer des APIs avec ASP.NET Core", text: "HTTP et REST, le pipeline, l'injection de dépendances, les endpoints, les DTOs et la validation, une API CRUD complète, puis la sécurité.",
+    chapters: [
+      { title: "HTTP et ASP.NET Core", items: ["api-http","api-rest","api-first-app","api-middleware","api-di","api-config"] },
+      { title: "Construire les endpoints", items: ["api-controllers","api-routing-binding","api-minimal","api-dtos","api-validation","api-errors"] },
+      { title: "Une API complète", items: ["api-logging","api-crud-ef","api-paging-filtering","api-patch-files","api-openapi","api-versioning"] },
+      { title: "Sécurité et services externes", items: ["api-auth-jwt","api-authorization","api-cors-ratelimit","api-httpclient"] } ] },
+  { title: "Architecture, patterns et tests", text: "Tester son code, organiser une application (SOLID, couches, Clean Architecture, CQRS, DDD), et les design patterns utiles au quotidien.",
+    chapters: [
+      { title: "Tester son code", items: ["tst-why","tst-xunit","tst-mocks","tst-integration"] },
+      { title: "Architecture d'une application", items: ["arc-solid-1","arc-solid-2","arc-layers","arc-clean","arc-cqrs","arc-ddd","arc-result"] },
+      { title: "Design patterns", items: ["pat-intro","pat-factory-builder","pat-singleton-di","pat-adapter-facade","pat-decorator","pat-strategy","pat-observer","pat-command-chain","pat-anti"] } ] },
+  { title: "Mise en production", text: "Cache, tâches de fond, files de messages, résilience, observabilité, Docker et CI/CD, puis la préparation à l'entretien.",
+    chapters: [
+      { title: "Mettre une API en production", items: ["prod-caching","prod-background","prod-messaging","prod-resilience","prod-observability","prod-docker","prod-cicd","prod-checklist","prod-interview"] } ] },
+  { bonus: true, title: "Bonus", text: "À faire quand tu veux, après la partie concernée : performance, temps réel, gRPC, Aspire, projet final, documentation et revue de code.",
+    chapters: [
+      { title: "Bonus", items: ["bon-performance","bon-signalr","bon-grpc","bon-aspire","bon-final-project","bon-architecture-docs","bon-self-review"] } ] },
 ];
 
 const keyOf = d => d.key || (d.week === 0 ? "b" : "j") + d.day;
@@ -397,7 +415,7 @@ function renderLesson(it) {
       }).join("")}
     </section>
     ${(d.quiz || []).length ? `<section class="block"><h2>Mini-quiz <small>as-tu bien compris ?</small></h2>${renderQuiz(d.quiz)}</section>` : ""}
-    ${d.project ? `<section class="block"><h2>${it.key.startsWith("l-") ? "À toi de jouer · Bibliothèque" : "Fil rouge OrderFlow"}</h2><div class="project">${d.project}</div></section>` : ""}
+    ${d.project ? `<section class="block"><h2>${it.key.startsWith("l-") ? "À toi de jouer · Bibliothèque" : "À toi de jouer · OrderFlow"}</h2><div class="project">${d.project}</div></section>` : ""}
     ${(d.resources || []).length ? `<section class="block"><h2>Pour aller plus loin</h2><ul class="resources">${d.resources.map(r => `<li><a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.label)}</a></li>`).join("")}</ul></section>` : ""}
     <div class="day-foot">${prev}<button class="btn ${isDone ? "is-done" : "primary"}" id="toggle-day" data-key="${it.key}" type="button">${isDone ? "Leçon terminée ✓" : "Marquer la leçon comme terminée"}</button>${next}</div>`;
 }
